@@ -42,7 +42,10 @@ class Firebasehelper {
     if (_user != null) {
       _appUser =
           AppUser(name: _user.displayName, uid: _user.uid, email: _user.email);
-      await _firestore.collection('users').doc(_user.uid).set(_appUser.toMap());
+      await _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .set(_appUser.toMap(), SetOptions(merge: true));
     }
 
     return _user;
