@@ -9,7 +9,7 @@ class Firebasehelper {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AppUser _appUser;
   User _user;
-
+  AppUser get currentUser => _appUser;
   FirebaseAuth _auth = FirebaseAuth.instance;
   init() async {
     if (_auth != null) {
@@ -44,10 +44,10 @@ class Firebasehelper {
 
     if (_user != null) {
       _appUser = AppUser(
-        name: _user.displayName,
-        uid: _user.uid,
-        email: _user.email,
-      );
+          name: _user.displayName,
+          uid: _user.uid,
+          email: _user.email,
+          img: _user.photoURL);
       await manageUser();
     }
 

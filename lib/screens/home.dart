@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dism/data/constants.dart';
+import 'package:dism/helpers/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:snowm_scanner/snowm_scanner.dart';
@@ -50,7 +52,7 @@ class _HomeState extends State<Home> {
   }
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
-    print(allDetectedBeacons[0].distance);
+    // print(allDetectedBeacons[0].distance);
     if (mounted)
       setState(() {
         detectedBeacons = allDetectedBeacons;
@@ -59,12 +61,30 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        centerTitle: true,
       ),
       body: Column(
-        children: <Widget>[],
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(firebase.currentUser?.img ?? ""),
+                child: Text(
+                  firebase.currentUser.name[0],
+                  style: textStyle,
+                ),
+              ),
+            ),
+          ),
+          //TODO:name /n email align center name bold 
+        ],
       ),
     );
   }

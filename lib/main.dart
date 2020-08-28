@@ -17,7 +17,7 @@ void main() async {
   var user = await firebase.init();
   await mPermission.checkPermission();
   await mPermission.requestPermission();
-  await firebase.manageUser(local: false);
+  // await firebase.manageUser(local: false);
   runApp(GetMaterialApp(
     home: user != null ? Home() : LoginScreen(),
     theme: ThemeData(
