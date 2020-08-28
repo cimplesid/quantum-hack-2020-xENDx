@@ -83,7 +83,20 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          //TODO:name /n email align center name bold 
+          Text(
+            "${firebase.currentUser.name}",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 22,
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "${firebase.currentUser.email}",
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
