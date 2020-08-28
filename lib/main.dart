@@ -20,6 +20,6 @@ void main() async {
     theme: ThemeData(
         textTheme: GoogleFonts.montagaTextTheme(), primaryColor: primaryColor),
     debugShowCheckedModeBanner: false,
-    title: 'Cave cafe',
+    title: 'DISM',
   ));
 }

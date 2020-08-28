@@ -23,7 +23,10 @@ class _HomeState extends State<Home> {
   }
 
   startListening() async {
-    var ids = [""];
+    var ids = [
+      "F5407F30-F5F8-466E-AFF9-25556B57FE6D",
+      "E1F54E02-1E23-44E0-9C3D-512EB56ADEC9"
+    ];
     snowmScanner.getBluetoothStateStream().listen((state) async {
       if (this.mounted)
         setState(() {
@@ -50,7 +53,6 @@ class _HomeState extends State<Home> {
   }
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
-    print(allDetectedBeacons);
     if (mounted)
       setState(() {
         detectedBeacons = allDetectedBeacons;
