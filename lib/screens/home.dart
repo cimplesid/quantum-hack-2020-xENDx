@@ -74,13 +74,15 @@ class _HomeState extends State<Home> {
         detectedBeacons = allDetectedBeacons;
       });
       var bc = beacons.values.toList();
-      detectedBeacons.forEach((element) {
+      detectedBeacons.forEach((element) async {
         if (bc.length == 0) {
           dbHelper.setLocaldata({element.uuid: element.toMap()});
+          await firebase.addUserLocationData(element.uuid);
         } else
           for (var i = 0; i < bc.length; i++) {
             if ((element.detectedTime - bc[i].detectedTime) > 3600000) {
               dbHelper.setLocaldata({element.uuid: element.toMap()});
+              await firebase.addUserLocationData(element.uuid);
             }
           }
       });
@@ -149,6 +151,7 @@ class _HomeState extends State<Home> {
               );
             if (t == 1)
               return Center(
+                //TODO: show list of trace in list tile, title user name, subtile time , 
                 child: Text('data'),
               );
             if (t == 2) return getBeaconList();
