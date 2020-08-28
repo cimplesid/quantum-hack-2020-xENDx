@@ -9,6 +9,21 @@ class Firebasehelper {
   User _user;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+  init() async {
+    if (_auth != null) {
+      _user = _auth.currentUser;
+      if (_user != null) {
+        _appUser = await getUser();
+      }
+      return _user;
+    }
+    return null;
+  }
+
+  getUser([String uid]) async {
+    var data = await _firestore.collection('users').doc(_user.uid).get();
+    return AppUser.fromMap(data.data());
+  }
 
   Future loginWithGoogle() async {
     GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
