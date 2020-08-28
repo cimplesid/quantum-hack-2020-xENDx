@@ -1,3 +1,3 @@
 # dism
 
-A project for quntamhack 2020 by xENDx
+A project for quantumhack 2020 by xENDx
