@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:dism/data/constants.dart';
 import 'package:dism/helpers/firebase.dart';
+import 'package:dism/widgets/home_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:snowm_scanner/snowm_scanner.dart';
 
 class Home extends StatefulWidget {
@@ -50,9 +52,9 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.red,
         colorText: Colors.white);
   }
+  
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
-    // print(allDetectedBeacons[0].distance);
     if (mounted)
       setState(() {
         detectedBeacons = allDetectedBeacons;
@@ -61,7 +63,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
@@ -83,7 +84,26 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          //TODO:name /n email align center name bold 
+          Text(
+            firebase.currentUser.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46),
+          ),
+          Text(
+            firebase.currentUser.email,
+            style: TextStyle(fontSize: 23),
+          ),
+          HomeCard(
+            color: Colors.red,
+            text: 'Contact Trace',
+            textStyle: textStyle.copyWith(fontSize: 30),
+            iconData: MdiIcons.locationEnter,
+          ),
+          HomeCard(
+            color: Colors.green,
+            text: 'Distance',
+            textStyle: textStyle.copyWith(fontSize: 30),
+            iconData: MdiIcons.divingScubaTank,
+          )
         ],
       ),
     );
