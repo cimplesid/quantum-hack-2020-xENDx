@@ -20,9 +20,9 @@ class AppUser {
 
   static AppUser fromMap(var user) {
     return AppUser(
-        name: user['name'],
-        email: user['email'],
-        uid: user['uid'],
+        name: user['name'] ?? "sid",
+        email: user['email'] ?? "sid@sdism.com",
+        uid: user['uid'] ?? "dfgyhuighfhjkl",
         lat: user['lat'] ?? 0,
         long: user['long'] ?? 0);
   }

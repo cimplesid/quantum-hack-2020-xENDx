@@ -15,21 +15,32 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: Center(
-        child: RaisedButton.icon(
-          color: Colors.red[600],
-          textColor: Colors.white,
-          onPressed: () async {
-            var user = await firebase.loginWithGoogle();
-            if (user != null)
-              Get.to(Home());
-            else
-              Get.snackbar('Error', 'Something went wrong',
-                  backgroundColor: Colors.red, colorText: Colors.red);
-          },
-          label: Icon(MdiIcons.google),
-          icon: Text('Gogin with google'),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            'DISM',
+            style: textStyle..copyWith(fontSize: 55),
+          ),
+          Center(
+            child: RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              color: Colors.red[600],
+              textColor: Colors.white,
+              onPressed: () async {
+                var user = await firebase.loginWithGoogle();
+                if (user != null)
+                  Get.to(Home());
+                else
+                  Get.snackbar('Error', 'Something went wrong',
+                      backgroundColor: Colors.red, colorText: Colors.red);
+              },
+              icon: Icon(MdiIcons.google),
+              label: Text('Gogin with google'),
+            ),
+          ),
+        ],
       ),
     );
   }

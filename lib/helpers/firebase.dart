@@ -20,9 +20,12 @@ class Firebasehelper {
     return null;
   }
 
-  getUser([String uid]) async {
+  Future<AppUser> getUser([String uid]) async {
     var data = await _firestore.collection('users').doc(_user.uid).get();
-    return AppUser.fromMap(data.data());
+    if (data.data() != null)
+      return AppUser.fromMap(data.data());
+    else
+      data.data();
   }
 
   Future loginWithGoogle() async {
