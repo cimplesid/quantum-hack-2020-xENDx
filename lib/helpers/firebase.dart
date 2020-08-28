@@ -72,6 +72,8 @@ class Firebasehelper {
   }
 
   Future<void> logout() async {
+    _user = null;
+    _appUser = null;
     return await _auth.signOut();
   }
 }
