@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dism/helpers/permission.dart';
 import 'package:dism/objects/app_user.dart';
+import 'package:dism/objects/trace.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:location/location.dart';
@@ -67,13 +68,12 @@ class Firebasehelper {
           .doc(_user.uid)
           .collection('trace')
           .doc();
-
-      ref.set({
-        "user": user.toMap(),
-        "uuid": uuid,
-        'id': ref.id,
-        "date": DateTime.now().millisecondsSinceEpoch
-      });
+      var trace = Trace()
+        ..user = user
+        ..uuid = uuid
+        ..id = ref.id
+        ..date = DateTime.now().millisecondsSinceEpoch;
+      ref.set(trace.toMap());
     }
   }
 
