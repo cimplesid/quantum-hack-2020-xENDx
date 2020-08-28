@@ -36,15 +36,11 @@ class Firebasehelper {
       ),
     ))
         .user;
-    if (_user != null)
-      await _firestore.collection('users').doc(_user.uid).set({
-        "name": _user.displayName,
-        "uid": _user.uid,
-        "email": _user.email,
-        "image_url": _user.photoURL,
-        "lastSignedIn": _user.metadata.lastSignInTime,
-        "createdAt": _user.metadata.creationTime,
-      });
+    if (_user != null) {
+      _appUser =
+          AppUser(name: _user.displayName, uid: _user.uid, email: _user.email);
+      await _firestore.collection('users').doc(_user.uid).set(_appUser.toMap());
+    }
 
     return _user;
   }
