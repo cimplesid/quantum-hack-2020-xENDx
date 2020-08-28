@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   bool isLoggedIn = false;
   init() async {
     var user = await firebase.init();
-    if (user == null) {
+    if (user != null) {
       setState(() {
         isLoggedIn = true;
       });
