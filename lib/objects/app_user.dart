@@ -23,7 +23,7 @@ class AppUser {
         name: user['name'],
         email: user['email'],
         uid: user['uid'],
-        lat: user['lat'],
-        long: user['long']);
+        lat: user['lat'] ?? 0,
+        long: user['long'] ?? 0);
   }
 }
