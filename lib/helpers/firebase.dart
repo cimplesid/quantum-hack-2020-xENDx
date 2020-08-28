@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dism/helpers/permission.dart';
 import 'package:dism/objects/app_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:location/location.dart';
 
 class Firebasehelper {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -39,16 +41,34 @@ class Firebasehelper {
       ),
     ))
         .user;
+
     if (_user != null) {
-      _appUser =
-          AppUser(name: _user.displayName, uid: _user.uid, email: _user.email);
-      await _firestore
-          .collection('users')
-          .doc(_user.uid)
-          .set(_appUser.toMap(), SetOptions(merge: true));
+      _appUser = AppUser(
+        name: _user.displayName,
+        uid: _user.uid,
+        email: _user.email,
+      );
+      await manageUser();
     }
 
     return _user;
+  }
+
+  Future<void> manageUser({bool local = true}) async {
+    if (_appUser != null) {
+      if (local) {
+        await mPermission.checkPermission();
+        await mPermission.requestPermission();
+      }
+      var location = await Location().getLocation();
+      return await _firestore.collection('users').doc(_user.uid).set(
+          (_appUser
+                ..lat = location.latitude
+                ..long = location.longitude)
+              .toMap(),
+          SetOptions(merge: true));
+    }
+    return null;
   }
 
   Future<void> logout() async {
