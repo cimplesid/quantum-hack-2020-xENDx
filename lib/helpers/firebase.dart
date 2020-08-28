@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dism/helpers/permission.dart';
 import 'package:dism/objects/app_user.dart';
+import 'package:dism/objects/trace.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:location/location.dart';
@@ -52,6 +53,34 @@ class Firebasehelper {
     }
 
     return _user;
+  }
+
+  getLocationData() {
+    //TODO:get trace from _firestore
+    // .collection('users')
+    // .doc(_user.uid)
+    // .collection('trace')
+  }
+  addUserLocationData(String uuid) async {
+    var docs = await _firestore
+        .collection('users')
+        .where('assignedBeacon', isEqualTo: uuid)
+        .get();
+    var user =
+        docs.docs.length > 0 ? AppUser.fromMap(docs.docs[0].data()) : null;
+    if (user != null) {
+      var ref = _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('trace')
+          .doc();
+      var trace = Trace()
+        ..user = user
+        ..uuid = uuid
+        ..id = ref.id
+        ..date = DateTime.now().millisecondsSinceEpoch;
+      ref.set(trace.toMap());
+    }
   }
 
   Future<void> manageUser({bool local = true}) async {
