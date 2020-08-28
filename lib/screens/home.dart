@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:snowm_scanner/snowm_scanner.dart';
+import 'package:firebase/firebase.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,11 +24,12 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     startListening();
-    getBc();
+    // getBc();
   }
 
   getBc() {
     ///TODO: add following line in beacon librarys lib/models/beacons.dart toMap method
+
     ///"detectedTime": detectedTime,
     beacons = dbHelper.getHistoryInBeacon();
   }
@@ -151,8 +153,19 @@ class _HomeState extends State<Home> {
               );
             if (t == 1)
               return Center(
-                //TODO: show list of trace in list tile, title: user name, subtile :time , 
-                child: Text('data'),
+                //TODO: show list of trace in list tile, title: user name, subtile :time ,
+
+                child: FutureBuilder(
+                    future: firebase.getLocationData(),
+                    builder: (context, snapshot) {
+                        var data = snapshot.data;
+                      return ListView.builder(itemBuilder: (context, snapshot) {
+                        return ListTile(
+                            title: data['username'],
+                            subtitle: data['time'],
+                            );
+                      });
+                    }),
               );
             if (t == 2) return getBeaconList();
           },
@@ -178,30 +191,9 @@ class _HomeState extends State<Home> {
               detectedBeacons[j].distance.toStringAsFixed(3) + "m",
               style: TextStyle(color: Colors.grey, fontSize: 30),
             ),
-<<<<<<< HEAD
-          ),
-          Text(
-            "${firebase.currentUser.name}",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 22,
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            "${firebase.currentUser.email}",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-    );
-=======
           );
         },
         itemCount: detectedBeacons.length,
       );
->>>>>>> d890c6424e9c48f4b301bcf400a06ce8ff5020f7
   }
 }

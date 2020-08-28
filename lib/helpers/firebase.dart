@@ -55,12 +55,16 @@ class Firebasehelper {
     return _user;
   }
 
-  getLocationData() {
+  Future<QuerySnapshot> getLocationData() async {
     //TODO:get trace from _firestore
     // .collection('users')
     // .doc(_user.uid)
     // .collection('trace')
+    var traces =
+        _firestore.collection('users').doc(_user.uid).collection('trace').get();
+    return traces;
   }
+
   addUserLocationData(String uuid) async {
     var docs = await _firestore
         .collection('users')
