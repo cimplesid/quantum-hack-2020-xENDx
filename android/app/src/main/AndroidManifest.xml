@@ -2,7 +2,7 @@
     package="xENDx.quantum.hack.dism">
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="dism"
+        android:label="DISM"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

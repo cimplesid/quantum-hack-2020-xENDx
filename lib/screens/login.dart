@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 var user = await firebase.loginWithGoogle();
                 if (user != null)
-                  Get.to(Home());
+                  Get.offAll(Home());
                 else
                   Get.snackbar('Error', 'Something went wrong',
                       backgroundColor: Colors.red, colorText: Colors.red);

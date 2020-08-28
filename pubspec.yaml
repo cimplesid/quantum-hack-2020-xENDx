@@ -18,6 +18,8 @@ dependencies:
   material_design_icons_flutter: ^3.2.3595
   snowm_scanner: ^0.8.0+4
   google_fonts: ^1.1.0
+  location: ^3.0.2
+  permission_handler: ^5.0.1+1
 
 flutter:
   uses-material-design: true
