@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor: Colors.red, colorText: Colors.red);
               },
               icon: Icon(MdiIcons.google),
+              //TODO:add circular indicator here
               label: Text('Gogin with google'),
             ),
           ),
