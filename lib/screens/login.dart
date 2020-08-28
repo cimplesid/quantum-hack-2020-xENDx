@@ -21,7 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
           textColor: Colors.white,
           onPressed: () async {
             var user = await firebase.loginWithGoogle();
-            if (user != null) Get.to(Home());
+            if (user != null)
+              Get.to(Home());
+            else
+              Get.snackbar('Error', 'Something went wrong',
+                  backgroundColor: Colors.red, colorText: Colors.red);
           },
           label: Icon(MdiIcons.google),
           icon: Text('Gogin with google'),
