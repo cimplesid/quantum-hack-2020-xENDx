@@ -151,7 +151,7 @@ class _HomeState extends State<Home> {
               );
             if (t == 1)
               return Center(
-                //TODO: show list of trace in list tile, title user name, subtile time , 
+                //TODO: show list of trace in list tile, title: user name, subtile :time , 
                 child: Text('data'),
               );
             if (t == 2) return getBeaconList();
