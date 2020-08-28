@@ -22,7 +22,7 @@ class Firebasehelper {
     ))
         .user;
     if (_user != null)
-      await _firestore.collection('users').doc(_user.uid).update({
+      await _firestore.collection('users').doc(_user.uid).set({
         "name": _user.displayName,
         "uid": _user.uid,
         "email": _user.email,
