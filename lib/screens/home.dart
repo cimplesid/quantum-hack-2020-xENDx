@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<SnowMBeacon> detectedBeacons;
+  List<SnowMBeacon> detectedBeacons = [];
   BluetoothState state;
   List<StreamSubscription> subs = [];
   @override
@@ -52,7 +52,6 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.red,
         colorText: Colors.white);
   }
-  
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
     if (mounted)
@@ -61,51 +60,96 @@ class _HomeState extends State<Home> {
       });
   }
 
+  PageController pageControlle = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-        centerTitle: true,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(firebase.currentUser?.img ?? ""),
-                child: Text(
-                  firebase.currentUser.name[0],
-                  style: textStyle,
-                ),
-              ),
+        appBar: AppBar(
+          title: Text('Home'),
+          centerTitle: true,
+        ),
+        body: PageView.builder(
+          controller: pageControlle,
+          itemBuilder: (_, t) {
+            if (t == 0)
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: firebase.currentUser.img != null
+                            ? NetworkImage(firebase.currentUser.img)
+                            : null,
+                        child: Text(
+                          firebase.currentUser.name[0],
+                          style: textStyle,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    firebase.currentUser.name,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46),
+                  ),
+                  Text(
+                    firebase.currentUser.email,
+                    style: TextStyle(fontSize: 23),
+                  ),
+                  HomeCard(
+                    color: Colors.red,
+                    text: 'Contact Trace',
+                    textStyle: textStyle.copyWith(fontSize: 30),
+                    iconData: MdiIcons.locationEnter,
+                    onTap: () {
+                      pageControlle.jumpToPage(1);
+                    },
+                  ),
+                  HomeCard(
+                    onTap: () {
+                      pageControlle.jumpToPage(2);
+                    },
+                    color: Colors.green,
+                    text: 'Distance',
+                    textStyle: textStyle.copyWith(fontSize: 30),
+                    iconData: MdiIcons.divingScubaTank,
+                  )
+                ],
+              );
+            if (t == 1)
+              return Center(
+                child: Text('data'),
+              );
+            if (t == 2) return getBeaconList();
+          },
+          itemCount: 3,
+        ));
+  }
+
+  getBeaconList() {
+    if (detectedBeacons.isEmpty)
+      return Center(
+        child: Text('No Beacons found'),
+      );
+    else
+      return ListView.builder(
+        itemBuilder: (_, j) {
+          return ListTile(
+            title: Text(
+              'Distance',
+              style: TextStyle(fontSize: 30),
             ),
-          ),
-          Text(
-            firebase.currentUser.name,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 46),
-          ),
-          Text(
-            firebase.currentUser.email,
-            style: TextStyle(fontSize: 23),
-          ),
-          HomeCard(
-            color: Colors.red,
-            text: 'Contact Trace',
-            textStyle: textStyle.copyWith(fontSize: 30),
-            iconData: MdiIcons.locationEnter,
-          ),
-          HomeCard(
-            color: Colors.green,
-            text: 'Distance',
-            textStyle: textStyle.copyWith(fontSize: 30),
-            iconData: MdiIcons.divingScubaTank,
-          )
-        ],
-      ),
-    );
+            subtitle: Text(detectedBeacons[j].uuid),
+            trailing: Text(
+              detectedBeacons[j].distance.toStringAsFixed(3),
+              style: TextStyle(color: Colors.grey, fontSize: 30),
+            ),
+          );
+        },
+        itemCount: detectedBeacons.length,
+      );
   }
 }
