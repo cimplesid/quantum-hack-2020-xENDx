@@ -13,7 +13,7 @@ import 'screens/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  snowmScanner.configure(enableMqtt: true);
+  snowmScanner.configure(enableMqtt: false);
   var user = await firebase.init();
   await mPermission.checkPermission();
   await mPermission.requestPermission();
