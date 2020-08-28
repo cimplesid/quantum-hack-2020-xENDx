@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "246162671415",
+    "firebase_url": "https://qh-project-db774.firebaseio.com",
+    "project_id": "qh-project-db774",
+    "storage_bucket": "qh-project-db774.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246162671415:android:7a4f6af05f10db9ab3bcb2",
+        "android_client_info": {
+          "package_name": "xENDx.quantum.hack.dism"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246162671415-nmcvv4u65qo9i28a0vk2bvjgr92tuln5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg_nXnR-yTqb8eFK_ocCw6MRnccmNm4NE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246162671415-nmcvv4u65qo9i28a0vk2bvjgr92tuln5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
