@@ -11,7 +11,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<SnowMBeacon> detectedBeacons;
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackbar;
   BluetoothState state;
   List<StreamSubscription> subs = [];
   @override
@@ -33,7 +32,6 @@ class _HomeState extends State<Home> {
           this.state = state;
         });
       if (state == BluetoothState.ON) {
-        if (snackbar != null) snackbar.close();
         subs.add(snowmScanner
             .scanBeacons(uuids: ids, scanAllBeacons: true)
             .listen(setBeacons));
@@ -44,21 +42,22 @@ class _HomeState extends State<Home> {
   }
 
   showSnackbar(String message) {
-    Get.snackbar(
-      'Turn on Bluetooth',
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      duration: Duration(seconds: 60),
-    );
+    Get.snackbar('Turn on Bluetooth', message,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 5),
+        backgroundColor: Colors.red,
+        colorText: Colors.white);
   }
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
+    print(allDetectedBeacons[0].toMap());
     if (mounted)
       setState(() {
         detectedBeacons = allDetectedBeacons;
       });
   }
-
+//open app update location
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
