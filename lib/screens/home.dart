@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dism/data/constants.dart';
 import 'package:dism/helpers/firebase.dart';
+import 'package:dism/helpers/local_db_helper.dart';
 import 'package:dism/widgets/home_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,12 +18,18 @@ class _HomeState extends State<Home> {
   List<SnowMBeacon> detectedBeacons = [];
   BluetoothState state;
   List<StreamSubscription> subs = [];
+  Map<String, SnowMBeacon> beacons = {};
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      startListening();
-    });
+    startListening();
+    getBc();
+  }
+
+  getBc() {
+    ///TODO: add following line in beacon librarys lib/models/beacons.dart toMap method
+    ///"detectedTime": detectedTime,
+    beacons = dbHelper.getHistoryInBeacon();
   }
 
   startListening() async {
@@ -45,6 +52,14 @@ class _HomeState extends State<Home> {
     });
   }
 
+  @override
+  void dispose() {
+    for (var i = 0; i < subs.length; i++) {
+      subs[i].cancel();
+    }
+    super.dispose();
+  }
+
   showSnackbar(String message) {
     Get.snackbar('Turn on Bluetooth', message,
         snackPosition: SnackPosition.BOTTOM,
@@ -54,10 +69,23 @@ class _HomeState extends State<Home> {
   }
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
-    if (mounted)
+    if (mounted) {
       setState(() {
         detectedBeacons = allDetectedBeacons;
       });
+      var bc = beacons.values.toList();
+      detectedBeacons.forEach((element) {
+        if (bc.length == 0) {
+          dbHelper.setLocaldata({element.uuid: element.toMap()});
+        } else
+          for (var i = 0; i < bc.length; i++) {
+            if ((element.detectedTime - bc[i].detectedTime) > 3600000) {
+              dbHelper.setLocaldata({element.uuid: element.toMap()});
+            }
+          }
+      });
+      getBc();
+    }
   }
 
   PageController pageControlle = PageController(initialPage: 0);
@@ -144,7 +172,7 @@ class _HomeState extends State<Home> {
             ),
             subtitle: Text(detectedBeacons[j].uuid),
             trailing: Text(
-              detectedBeacons[j].distance.toStringAsFixed(3),
+              detectedBeacons[j].distance.toStringAsFixed(3) + "m",
               style: TextStyle(color: Colors.grey, fontSize: 30),
             ),
           );
