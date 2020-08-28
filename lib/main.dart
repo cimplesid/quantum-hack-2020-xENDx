@@ -1,3 +1,4 @@
+import 'package:dism/data/constants.dart';
 import 'package:dism/helpers/firebase.dart';
 import 'package:dism/screens/login.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'DSM',
-      theme: ThemeData(),
+      theme: ThemeData(primaryColor: primaryColor),
       home: isLoggedIn ? Home() : LoginScreen(),
     );
   }
