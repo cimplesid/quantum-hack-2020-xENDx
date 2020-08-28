@@ -25,7 +25,7 @@ class Firebasehelper {
     if (data.data() != null)
       return AppUser.fromMap(data.data());
     else
-      data.data();
+      return null;
   }
 
   Future loginWithGoogle() async {
