@@ -1,11 +1,14 @@
 import 'package:dism/data/constants.dart';
 import 'package:dism/helpers/firebase.dart';
 import 'package:dism/screens/login.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
