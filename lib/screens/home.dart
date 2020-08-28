@@ -57,8 +57,6 @@ class _HomeState extends State<Home> {
       });
   }
 
-//open app update location
-//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
