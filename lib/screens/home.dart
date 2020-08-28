@@ -50,12 +50,13 @@ class _HomeState extends State<Home> {
   }
 
   setBeacons(List<SnowMBeacon> allDetectedBeacons) async {
-    print(allDetectedBeacons[0].toMap());
+    print(allDetectedBeacons[0].distance);
     if (mounted)
       setState(() {
         detectedBeacons = allDetectedBeacons;
       });
   }
+
 //open app update location
 //
   @override

@@ -1,5 +1,6 @@
 import 'package:dism/data/constants.dart';
 import 'package:dism/helpers/firebase.dart';
+import 'package:dism/helpers/permission.dart';
 import 'package:dism/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,8 @@ void main() async {
   await Firebase.initializeApp();
   snowmScanner.configure(enableMqtt: true);
   var user = await firebase.init();
-
+  await mPermission.checkPermission();
+  await mPermission.requestPermission();
   runApp(GetMaterialApp(
     home: user != null ? Home() : LoginScreen(),
     theme: ThemeData(
