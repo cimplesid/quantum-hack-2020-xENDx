@@ -21,15 +21,15 @@ class Firebasehelper {
       ),
     ))
         .user;
-
-    await _firestore.collection('users').doc(_user.uid).update({
-      "name": _user.displayName,
-      "uid": _user.uid,
-      "email": _user.email,
-      "image_url": _user.photoURL,
-      "lastSignedIn": _user.metadata.lastSignInTime,
-      "createdAt": _user.metadata.creationTime,
-    });
+    if (_user != null)
+      await _firestore.collection('users').doc(_user.uid).update({
+        "name": _user.displayName,
+        "uid": _user.uid,
+        "email": _user.email,
+        "image_url": _user.photoURL,
+        "lastSignedIn": _user.metadata.lastSignInTime,
+        "createdAt": _user.metadata.creationTime,
+      });
 
     return _user;
   }
