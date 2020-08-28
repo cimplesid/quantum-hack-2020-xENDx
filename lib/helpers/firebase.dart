@@ -54,6 +54,29 @@ class Firebasehelper {
     return _user;
   }
 
+  addUserLocationData(String uuid) async {
+    var docs = await _firestore
+        .collection('users')
+        .where('assignedBeacon', isEqualTo: uuid)
+        .get();
+    var user =
+        docs.docs.length > 0 ? AppUser.fromMap(docs.docs[0].data()) : null;
+    if (user != null) {
+      var ref = _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('trace')
+          .doc();
+
+      ref.set({
+        "user": user.toMap(),
+        "uuid": uuid,
+        'id': ref.id,
+        "date": DateTime.now().millisecondsSinceEpoch
+      });
+    }
+  }
+
   Future<void> manageUser({bool local = true}) async {
     if (_appUser != null) {
       if (local) {

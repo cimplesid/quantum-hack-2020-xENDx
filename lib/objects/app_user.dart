@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class AppUser {
   String uid;
   String name;
