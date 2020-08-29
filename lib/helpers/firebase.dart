@@ -82,7 +82,7 @@ class Firebasehelper {
         ..uuid = uuid
         ..id = ref.id
         ..date = DateTime.now().millisecondsSinceEpoch;
-      ref.set(trace.toMap());
+      await ref.set(trace.toMap());
     }
   }
 

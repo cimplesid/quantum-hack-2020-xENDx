@@ -26,4 +26,5 @@ class Trace {
         "id": id,
         "date": date,
       };
+ 
 }

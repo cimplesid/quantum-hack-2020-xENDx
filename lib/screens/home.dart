@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:snowm_scanner/snowm_scanner.dart';
-import 'package:firebase/firebase.dart';
 import 'package:dism/objects/trace.dart' as t;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -96,16 +95,29 @@ class _HomeState extends State<Home> {
   }
 
   PageController pageControlle = PageController(initialPage: 0);
+  int a = 0;
+  getname() {
+    if (a == 0) return 'Home';
+    if (a == 1)
+      return 'Traces';
+    else
+      return 'Distances from beacons';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
+          title: Text(getname()),
           centerTitle: true,
         ),
         body: PageView.builder(
           controller: pageControlle,
+          onPageChanged: (p) {
+            setState(() {
+              a = p.toInt();
+            });
+          },
           itemBuilder: (_, t) {
             if (t == 0)
               return Column(
@@ -172,13 +184,16 @@ class _HomeState extends State<Home> {
           itemCount: traces.length,
           itemBuilder: (context, i) {
             var data = traces[i] as t.Trace;
-            return ListView.builder(itemBuilder: (context, snapshot) {
-              return ListTile(
-                title: Text(data.user.name),
-                subtitle: Text(timeago
-                    .format(DateTime.fromMillisecondsSinceEpoch(data.date))),
-              );
-            });
+            return ListTile(
+              title: Text(
+                data.user.name,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+              ),
+              subtitle: Text(
+                timeago.format(DateTime.fromMillisecondsSinceEpoch(data.date)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            );
           });
   }
 
