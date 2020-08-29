@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:snowm_scanner/snowm_scanner.dart';
 import 'package:firebase/firebase.dart';
+import 'package:dism/objects/trace.dart' as t;
+import 'package:timeago/timeago.dart' as timeago;
 
 class Home extends StatefulWidget {
   @override
@@ -24,14 +26,15 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     startListening();
-    // getBc();
+    getBc();
   }
 
-  getBc() {
+  getBc() async {
     ///TODO: add following line in beacon librarys lib/models/beacons.dart toMap method
-
     ///"detectedTime": detectedTime,
     beacons = dbHelper.getHistoryInBeacon();
+    traces = await firebase.getLocationData();
+    setState(() {});
   }
 
   startListening() async {
@@ -151,26 +154,32 @@ class _HomeState extends State<Home> {
                   )
                 ],
               );
-            if (t == 1)
-              return Center(
-                //TODO: show list of trace in list tile, title: user name, subtile :time ,
-
-                child: FutureBuilder(
-                    future: firebase.getLocationData(),
-                    builder: (context, snapshot) {
-                        var data = snapshot.data;
-                      return ListView.builder(itemBuilder: (context, snapshot) {
-                        return ListTile(
-                            title: data['username'],
-                            subtitle: data['time'],
-                            );
-                      });
-                    }),
-              );
+            if (t == 1) return getTraceList();
             if (t == 2) return getBeaconList();
           },
           itemCount: 3,
         ));
+  }
+
+  var traces = [];
+  getTraceList() {
+    if (traces.isEmpty)
+      return Center(
+        child: Text('No Traces found'),
+      );
+    else
+      return ListView.builder(
+          itemCount: traces.length,
+          itemBuilder: (context, i) {
+            var data = traces[i] as t.Trace;
+            return ListView.builder(itemBuilder: (context, snapshot) {
+              return ListTile(
+                title: Text(data.user.name),
+                subtitle: Text(timeago
+                    .format(DateTime.fromMillisecondsSinceEpoch(data.date))),
+              );
+            });
+          });
   }
 
   getBeaconList() {

@@ -21,6 +21,7 @@ dependencies:
   location: ^3.0.2
   permission_handler: ^5.0.1+1
   shared_preferences: ^0.5.10
+  timeago: ^2.0.27
 
 flutter:
   uses-material-design: true
