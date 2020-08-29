@@ -21,32 +21,32 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Text(
             'DISM',
-            style: textStyle..copyWith(fontSize: 55),
+            style: TextStyle(fontSize: 55, color: Colors.white),
           ),
           Center(
-            child: RaisedButton.icon(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              color: Colors.red[600],
-              textColor: Colors.white,
-              onPressed: () async {
-                var user = await firebase.loginWithGoogle();
-                if (user != null) {
-                  setState(() => _loading = true);
-                  Get.offAll(Home());
-                } else {
-                  setState(() => _loading = false);
-                  Get.snackbar('Error', 'Something went wrong',
-                      backgroundColor: Colors.red, colorText: Colors.red);
-                }
-              },
-              icon: _loading
-                  ? CircularProgressIndicator(
-                      strokeWidth: 3.0,
-                    )
-                  : Icon(MdiIcons.google),
-              label: Text('Gogin with google'),
-            ),
+            child: _loading
+                ? CircularProgressIndicator(
+                    strokeWidth: 3.0,
+                  )
+                : RaisedButton.icon(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    color: Colors.red[600],
+                    textColor: Colors.white,
+                    onPressed: () async {
+                      setState(() => _loading = true);
+                      var user = await firebase.loginWithGoogle();
+                      if (user != null) {
+                        Get.offAll(Home());
+                      } else {
+                        setState(() => _loading = false);
+                        Get.snackbar('Error', 'Something went wrong',
+                            backgroundColor: Colors.red, colorText: Colors.red);
+                      }
+                    },
+                    icon: Icon(MdiIcons.google),
+                    label: Text('Login with google'),
+                  ),
           ),
         ],
       ),
