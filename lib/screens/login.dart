@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +31,20 @@ class _LoginScreenState extends State<LoginScreen> {
               textColor: Colors.white,
               onPressed: () async {
                 var user = await firebase.loginWithGoogle();
-                if (user != null)
+                if (user != null) {
+                  setState(() => _loading = true);
                   Get.offAll(Home());
-                else
+                } else {
+                  setState(() => _loading = false);
                   Get.snackbar('Error', 'Something went wrong',
                       backgroundColor: Colors.red, colorText: Colors.red);
+                }
               },
-              icon: Icon(MdiIcons.google),
-              //TODO:add circular indicator here
+              icon: _loading
+                  ? CircularProgressIndicator(
+                      strokeWidth: 3.0,
+                    )
+                  : Icon(MdiIcons.google),
               label: Text('Gogin with google'),
             ),
           ),

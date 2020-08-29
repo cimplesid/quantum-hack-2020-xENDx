@@ -8,16 +8,18 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snowm_scanner/snowm_scanner.dart';
 
+import 'helpers/local_db_helper.dart';
 import 'screens/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  snowmScanner.configure(enableMqtt: true);
+  await dbHelper.init();
+  snowmScanner.configure(enableMqtt: false);
   var user = await firebase.init();
   await mPermission.checkPermission();
   await mPermission.requestPermission();
-  await firebase.manageUser(local: false);
+  // await firebase.manageUser(local: false);
   runApp(GetMaterialApp(
     home: user != null ? Home() : LoginScreen(),
     theme: ThemeData(

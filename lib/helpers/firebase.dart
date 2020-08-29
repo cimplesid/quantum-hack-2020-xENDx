@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dism/helpers/permission.dart';
 import 'package:dism/objects/app_user.dart';
+import 'package:dism/objects/trace.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:location/location.dart';
@@ -9,7 +10,7 @@ class Firebasehelper {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AppUser _appUser;
   User _user;
-
+  AppUser get currentUser => _appUser;
   FirebaseAuth _auth = FirebaseAuth.instance;
   init() async {
     if (_auth != null) {
@@ -44,14 +45,45 @@ class Firebasehelper {
 
     if (_user != null) {
       _appUser = AppUser(
-        name: _user.displayName,
-        uid: _user.uid,
-        email: _user.email,
-      );
+          name: _user.displayName,
+          uid: _user.uid,
+          email: _user.email,
+          img: _user.photoURL);
       await manageUser();
     }
 
     return _user;
+  }
+
+  Future<List<Trace>> getLocationData() async {
+    var traces = await _firestore
+        .collection('users')
+        .doc(_user.uid)
+        .collection('trace')
+        .get();
+    return traces.docs.map<Trace>((e) => Trace.fromMap(e.data())).toList();
+  }
+
+  addUserLocationData(String uuid) async {
+    var docs = await _firestore
+        .collection('users')
+        .where('assignedBeacon', isEqualTo: uuid)
+        .get();
+    var user =
+        docs.docs.length > 0 ? AppUser.fromMap(docs.docs[0].data()) : null;
+    if (user != null) {
+      var ref = _firestore
+          .collection('users')
+          .doc(_user.uid)
+          .collection('trace')
+          .doc();
+      var trace = Trace()
+        ..user = user
+        ..uuid = uuid
+        ..id = ref.id
+        ..date = DateTime.now().millisecondsSinceEpoch;
+      ref.set(trace.toMap());
+    }
   }
 
   Future<void> manageUser({bool local = true}) async {
